@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Lato", sans-serif;
+    }
+    .nav {
+      background-color: black;top: 0;position:fixed;width:100%;left: 0;
+    }
+    .navbar{
+      width:100%;overflow:hidden;display:inline-block;width:auto;
+    }
+    .navbar a{
+      padding:8px 16px;float:left;width:auto;border:none;display:block;outline:0;text-decoration: none;color:white;
+    }
+    a:hover{
+      background-color: white;
+      color:black;
+    }
+    .content{
+      max-width:2000px;margin-top:46px;text-align:center;
+    }
+    h1{
+      font-size:60px;
+    }
+    img{
+      width:630px;
+      height:450px;
+    }
+  </style>
+  <title>Home page</title>
+</head>
+<body>
+<!-- Navbar -->
+  <div class="nav">
+    <div class="navbar">
+      <a href="/">Home</a>
+      <a href="/viewProducts">Cars</a>
+      <a href="/viewProviders">Providers</a>
+    </div>
+  </div>
+<!-- Page content -->
+  <div class="content">
+    <h1>Welcome to Z-Auto</h1>
+    <div class="product">
+      {{#each products}}
+        <img src="{{picURL}}" alt="product picture">
+        <br>
+      {{/each}}
+    </div>
+  </div>
+
+</body>
+</html>
