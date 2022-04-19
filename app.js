@@ -18,12 +18,46 @@ app.get('/', async (req, res) => {
 //Add page
 app.get('/newProduct', async (req, res) => {
     const query = await Provider.find()
-    res.render('newProduct', {'provider':query})
+    res.render('product/newProduct', {'provider':query})
 })
 app.get('/newProvider', async (req, res) => {
     const query = await Product.find()
-    res.render('newProviders', {'product':query})
+    res.render('provider/newProviders', {'product':query})
 })
+//Edit page
+app.get('/editProduct', async (req, res) => {
+    const id = req.query.id
+    const prod = await Product.findById(id)
+    const query = await Provider.find()
+    res.render('product/editProduct', {'product':prod, 'provider':query})
+})
+app.get('/editProvider', async (req, res) => {
+    const id = req.query.id
+    const prov = await Provider.findById(id)
+    const query = await Product.find()
+    res.render('provider/editProvider', {'provider':prov, 'product':query})
+})
+//view page
+app.get('/viewProducts',async (req, res)=>{
+    const query = await Product.find()
+    res.render('product/allProduct', {'products':query})
+})
+app.get('/viewProviders',async (req, res)=>{
+    const query = await Provider.find()
+    res.render('provider/providers', {'providers':query})
+})
+//View Details
+app.get('/productDetail',async (req, res)=>{
+    const id = req.query.id
+    const query = await Product.findById(id).populate('provider')
+    res.render('product/productDetails', {'product':query})
+})
+app.get('/providerDetail',async (req, res)=>{
+    const id = req.query.id
+    const query = await Provider.findById(id)
+    res.render('provider/providerDetails', {'provider':query})
+})
+
 //Add Post
 app.post('/newProduct',async (req, res) => {
     const name = req.body.txtName
@@ -44,19 +78,6 @@ app.post('/newProvider',async (req, res) => {
     const providerEntity = new Provider({'name':name,'phoneNumber':phoneNumber, 'email': email, 'address':address, 'picture':picture})
     await providerEntity.save()
     res.redirect('/viewProviders')
-})
-//Edit page
-app.get('/editProduct', async (req, res) => {
-    const id = req.query.id
-    const prod = await Product.findById(id)
-    const query = await Provider.find()
-    res.render('editProduct', {'product':prod, 'provider':query})
-})
-app.get('/editProvider', async (req, res) => {
-    const id = req.query.id
-    const prov = await Provider.findById(id)
-    const query = await Product.find()
-    res.render('editProvider', {'provider':prov, 'product':query})
 })
 //Edit Post
 app.post('/editProduct', async (req, res) => {
@@ -109,26 +130,6 @@ app.get('/delete1',async (req, res) => {
     const id = req.query.id
     await Provider.deleteOne({'_id' : id})
     res.redirect('/')
-})
-//view page
-app.get('/viewProducts',async (req, res)=>{
-    const query = await Product.find()
-    res.render('allProduct', {'products':query})
-})
-app.get('/viewProviders',async (req, res)=>{
-    const query = await Provider.find()
-    res.render('providers', {'providers':query})
-})
-//View Details
-app.get('/productDetail',async (req, res)=>{
-    const id = req.query.id
-    const query = await Product.findById(id).populate('provider')
-    res.render('productDetails', {'product':query})
-})
-app.get('/providerDetail',async (req, res)=>{
-    const id = req.query.id
-    const query = await Provider.findById(id)
-    res.render('providerDetails', {'provider':query})
 })
 //Search
 app.post('/searchProduct',async (req, res) => {
