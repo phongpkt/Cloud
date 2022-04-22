@@ -177,12 +177,12 @@ app.get('/delete1',async (req, res) => {
 app.post('/searchProduct',async (req, res) => {
     const searchText = req.body.txtSearch
     const query = await Product.find({'name':searchText})
-    res.render('allProduct', {'products':query})
+    res.render('product/allProduct', {'products':query})
 })
 app.post('/searchProvider',async (req, res) => {
     const searchText = req.body.txtSearch
     const query = await Provider.find({'name':searchText})
-    res.render('providers', {'providers':query})
+    res.render('product/providers', {'providers':query})
 })
 
 const PORT = process.env.PORT || 5000
