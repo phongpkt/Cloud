@@ -31,7 +31,7 @@
         <h1>Add New Product</h1>
         <form action="/newProduct" method="post">
             <div class="form">
-            Name: <input type="text" name="txtName">
+            Name: <input type="text" name="txtName"> <span style="color: red;">{{error}}</span>
             <br>
             Price: <input type="text" name="txtPrice">
             <br>

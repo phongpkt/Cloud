@@ -28,6 +28,16 @@
         .product a{
             text-decoration: none;
         }
+        .pages{
+            margin-top:100px;
+        }
+        .pages a{
+            border: 1px solid black;
+            font-weight: bold;
+            color:black;
+            text-decoration: none;
+            padding: 25px;
+        }
     </style>
 </head>
 <body>
@@ -43,6 +53,10 @@
 <!-- Page content -->
 <div class="content">
     <h1>All Product</h1>
+    <form action="/sortByPrice" method="post">
+        <button>Sort by Price</button>
+    </form>
+    <br>
     <form action="/searchProduct" method="post">
         <input type="text" name="txtSearch">
         <input type="submit" value="Search">
@@ -58,6 +72,9 @@
             <a href="/editProduct?id={{_id}}">Edit</a>
         </div>
     {{/each}}
+    <div class="pages">
+        <a href="/viewProducts?page=1">Page 1</a> <a href="/viewProducts?page=2">Page 2</a>
+    </div>
 </div>
 </body>
 </html>

@@ -39,12 +39,30 @@ app.get('/editProvider', async (req, res) => {
 })
 //view page
 app.get('/viewProducts',async (req, res)=>{
-    const query = await Product.find()
-    res.render('product/allProduct', {'products':query})
+    var page = req.query.page
+    if (page == 1){
+        const query = await Product.find().limit(5)
+        res.render('product/allProduct', {'products':query})
+    }else if (page == 2){
+        const query = await Product.find().skip(5).limit(5)
+        res.render('product/allProduct', {'products':query})
+    }else{
+        const query = await Product.find()
+        res.render('product/allProduct', {'products':query})
+    }
 })
 app.get('/viewProviders',async (req, res)=>{
-    const query = await Provider.find()
+    var page = req.query.page
+    if (page == 1){
+        const query = await Provider.find().limit(5)
+        res.render('provider/providers', {'providers':query})
+    }else if (page == 2){
+        const query = await Provider.find().skip(5).limit(5)
+        res.render('provider/providers', {'providers':query})
+    }else{
+        const query = await Provider.find()
     res.render('provider/providers', {'providers':query})
+    }
 })
 //View Details
 app.get('/productDetail',async (req, res)=>{
@@ -57,7 +75,11 @@ app.get('/providerDetail',async (req, res)=>{
     const query = await Provider.findById(id)
     res.render('provider/providerDetails', {'provider':query})
 })
-
+//Sort by price
+app.post('/sortByPrice',async (req, res)=>{
+    const query = await Product.find().sort({price : -1})
+    res.render('product/allProduct', {'products':query})
+})
 //Add Post
 app.post('/newProduct',async (req, res) => {
     const name = req.body.txtName
@@ -65,9 +87,29 @@ app.post('/newProduct',async (req, res) => {
     const description = req.body.txtDescription
     const picURL = req.body.picURL
     const providerId = req.body.provider
-    const productEntity = new Product({'name':name,'price':price, 'description': description, 'picURL':picURL, provider:providerId})
-    await productEntity.save();
-    res.redirect('/viewProducts');
+    let errorMsg
+    let flag = true
+    if(name.trim().length == 0){
+        errorMsg = "Name must not be empty!"
+        flag =false
+    }
+    if(isNaN(name) == true){
+        errorMsg = "Name must not contains numbers!"
+        flag =false
+    }
+    if(isNaN(price) == false){
+        errorMsg = "Price must not contains characters!"
+        flag =false
+    }
+    if (flag == true){
+        const productEntity = new Product({'name':name,'price':price, 'description': description, 'picURL':picURL, provider:providerId})
+        await productEntity.save();
+        res.redirect('/viewProducts')
+    }
+    else{
+        const query = await Provider.find()
+        res.render('product/newProduct', {"error":errorMsg, "provider":query})
+    }
 })
 app.post('/newProvider',async (req, res) => {
     const name = req.body.txtName

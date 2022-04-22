@@ -8,7 +8,7 @@ mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 
 const ProviderSchema = new Schema({
-    name: {type:String, required:true},
+    name: {type:String, required:true, length:20},
     phoneNumber: {type:String},
     email: {type:String},
     address: {type:String},
