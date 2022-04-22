@@ -98,7 +98,7 @@ app.post('/newProduct',async (req, res) => {
         flag =false
     }
     if(isNaN(price) == false){
-        errorMsg = "Price must not contains characters!"
+        errorPrice = "Price must not contains characters!"
         flag =false
     }
     if (flag == true){
@@ -108,7 +108,7 @@ app.post('/newProduct',async (req, res) => {
     }
     else{
         const query = await Provider.find()
-        res.render('product/newProduct', {"error":errorMsg, "provider":query})
+        res.render('product/newProduct', {"error":errorMsg, "errorPrice":errorPrice, "provider":query})
     }
 })
 app.post('/newProvider',async (req, res) => {
