@@ -87,26 +87,23 @@ app.post('/newProduct',async (req, res) => {
     const description = req.body.txtDescription
     const picURL = req.body.picURL
     const providerId = req.body.provider
+    let errorPrice
     let errorMsg
     let flag = true
     if(name.trim().length == 0){
         errorMsg = "Name must not be empty!"
-        flag =false
+        flag=false
     }
-    if(isNaN(name) == true){
-        errorMsg = "Name must not contains numbers!"
-        flag =false
-    }
-    if(isNaN(price) == false){
+    if(isNaN(price) == true){
         errorPrice = "Price must not contains characters!"
-        flag =false
+        flag=false
     }
     if (flag == true){
         const productEntity = new Product({'name':name,'price':price, 'description': description, 'picURL':picURL, provider:providerId})
         await productEntity.save();
         res.redirect('/viewProducts')
     }
-    else{
+    else if(flag == false){
         const query = await Provider.find()
         res.render('product/newProduct', {"error":errorMsg, "errorPrice":errorPrice, "provider":query})
     }
